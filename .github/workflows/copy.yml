@@ -4,7 +4,7 @@ name: Copy images
 
 # Controls when the workflow will run
 on:
-
+  push:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -20,5 +20,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: copy transmission
+        run: skopeo copy --all --dest-compress-format zstd:chunked --dest-creds ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }} docker://linuxserver/transmission:latest docker://ghcr.io/abihf/zimg/transmission:latest
+
       - name: copy plex
         run: skopeo copy --all --dest-compress-format zstd:chunked --dest-creds ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }} docker://linuxserver/plex:latest docker://ghcr.io/abihf/zimg/plex:latest
